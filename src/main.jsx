@@ -1,11 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Button from "./COMPONENTS/Button"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
 
-function Page(){
-    return(
-       <Button/>
-    )
-}
+import App from "./App.jsx";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(<Page/>)
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <Router>
+    <App />
+    </Router>
+   
+  </StrictMode>
+);
