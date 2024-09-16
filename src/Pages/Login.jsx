@@ -9,8 +9,7 @@ const Login = () => {
     email: "",
     pass: "",
   });
-  const [showToaster, setShowToaster] = useState(false); // To show toaster
-
+  const [showToaster, setShowToaster] = useState({ show: false, message: "", type: "" }); // To show toaster as object
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
@@ -20,23 +19,24 @@ const Login = () => {
       return;
     }
 
-   
-    
-    if(! /^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)){
+    if (!/^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)) {
       setErrorMsg("Please enter a valid college email");
       return;
     }
 
-
     setErrorMsg("");
+    setSubmitButtonDisabled(true); // Disable the button after submission to prevent multiple requests
 
     try {
       const res = await axios.post("http://localhost:3001/login", {
         email: values.email,
         password: values.pass,
       });
-
-      if (res.data === "Found and verified") {
+      console.log(res.data.token);
+      console.log(res.data.message);
+      if (res.data.token) {
+        // Login successful, store token
+        localStorage.setItem('token', res.data.token); // Store JWT in localStorage
         setShowToaster({
           show: true,
           message: "Login Successful!",
@@ -45,28 +45,21 @@ const Login = () => {
 
         setTimeout(() => {
           setShowToaster({ show: false, message: "", type: "" });
-          navigate("/student"); // Redirect to login page
+          navigate("/student"); // Redirect to student page
         }, 2000);
-      } else if (res.data === "password not match") {
-      if (res.data.token) {
-        // Login successful, store token
-        localStorage.setItem('token', res.data.token);  // Store JWT in localStorage
-        alert("Login successful");
-
-        // Redirect to student dashboard or other authenticated page
-        navigate('/student');
       } else if (res.data.message === "password not match") {
         setErrorMsg("Incorrect password");
       } else {
         setErrorMsg("Data not found");
       }
-    } }catch (err) {
+    } catch (err) {
       setErrorMsg("An error occurred. Please try again.");
+    } finally {
+      setSubmitButtonDisabled(false); // Re-enable the button after response
     }
   };
 
   return (
-   
     <div className="min-h-screen flex justify-center items-center bg-gray_bg max-sm:items-start max-sm:pt-20">
       <div className="min-w-80 max-w-md bg-secondary shadow-md rounded p-6 flex flex-col gap-6">
         <h1 className="text-3xl font-bold">Login</h1>
@@ -80,7 +73,7 @@ const Login = () => {
         />
         <InputControl
           label="Password"
-          type="text"
+          type="text" // Correct type for password input
           onChange={(event) =>
             setValues((prev) => ({ ...prev, pass: event.target.value }))
           }
@@ -106,6 +99,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+
       {showToaster.show && (
         <div
           className={`fixed top-4 right-4 py-2 px-4 rounded-md shadow-lg ${
@@ -117,7 +111,6 @@ const Login = () => {
       )}
     </div>
   );
-
 };
 
 export default Login;
