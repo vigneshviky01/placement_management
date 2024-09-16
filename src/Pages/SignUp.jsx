@@ -49,7 +49,7 @@ function Signup() {
       name: values.name,
       email: values.email,
       password: values.pass,
-      phoneNo: values.phoneNumber
+      phoneNumber: values.phoneNumber
     })
     .then(res => {
       if (res.data === "User Already Exist") {
@@ -79,19 +79,21 @@ function Signup() {
   };
 
   return (
-    <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center max-sm:items-start max-sm:pt-20">
+    <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center ">
       <div className="sm:min-w-[480px]  bg-secondary shadow-md p-10 rounded-lg flex flex-col gap-4">
         <h1 className="heading text-3xl font-bold">Signup</h1>
 
         <InputControl
           label="Name"
+          type="text"
           placeholder="Enter your name"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, name: event.target.value }))
           }
         />
         <InputControl
-          label="Email"
+          label="GCT Mail ID"
+         type="text"
           placeholder="Enter email address"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, email: event.target.value }))
@@ -99,6 +101,7 @@ function Signup() {
         />
         <InputControl
           label="Password"
+          type="text"
           placeholder="Enter password"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, pass: event.target.value }))
@@ -107,6 +110,7 @@ function Signup() {
        
        <InputControl
           label="Phone Number"
+          type="text"
           placeholder="Enter phone number"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, phoneNumber: event.target.value }))
@@ -118,7 +122,7 @@ function Signup() {
           <button
             onClick={handleSubmission}
             disabled={submitButtonDisabled}
-            className="button bg-dark-coffee text-secondary rounded-md font-bold py-2 px-4 transition duration-100"
+            className="button bg-sm-elements text-primary rounded-md font-bold py-2 px-4 transition duration-100"
           >
             Signup
           </button>
