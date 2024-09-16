@@ -94,8 +94,8 @@ function Signup() {
   };
 
   return (
-    <div className="h-full min-h-screen w-full bg-white flex justify-center items-center max-sm:items-start mt-20">
-      <div className="sm:min-w-[480px] fit-content bg-coffee shadow-md p-10 rounded-lg flex flex-col gap-4">
+    <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center max-sm:items-start max-sm:pt-20">
+      <div className="sm:min-w-[480px]  bg-secondary shadow-md p-10 rounded-lg flex flex-col gap-4">
         <h1 className="heading text-3xl font-bold">Signup</h1>
 
         <InputControl
@@ -119,7 +119,8 @@ function Signup() {
             setValues((prev) => ({ ...prev, pass: event.target.value }))
           }
         />
-        <InputControl
+       
+       <InputControl
           label="Phone Number"
           placeholder="Enter phone number"
           onChange={(event) =>

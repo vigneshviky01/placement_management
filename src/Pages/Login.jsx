@@ -50,8 +50,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-white max-sm:items-start mt-20">
-      <div className="min-w-80 max-w-md bg-coffee shadow-md rounded p-6 flex flex-col gap-6">
+    <div className="min-h-screen flex justify-center items-center bg-gray_bg max-sm:items-start max-sm:pt-20">
+      <div className="min-w-80 max-w-md bg-secondary  shadow-md rounded p-6 flex flex-col gap-6">
         <h1 className="text-3xl font-bold">Login</h1>
 
         <InputControl
