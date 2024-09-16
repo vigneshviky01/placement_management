@@ -22,21 +22,6 @@ function Signup() {
       return;
     }
 
-    // function validateEmail(email) {
-    //   // Define the regular expression for the email pattern
-    //   const emailPattern = /^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/;
-    
-    //   // Test the email against the pattern
-    //   if (emailPattern.test(email)) {
-    //     console.log("Valid email address");
-    //     return true;
-    //   } else {
-    //     console.log("Invalid email address");
-    //     return;
-    //   }
-    // }
-
-    // validateEmail(values.email);
     if(! /^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)){
       setErrorMsg("Please enter a valid college email");
       return;

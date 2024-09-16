@@ -18,13 +18,11 @@ const Login = () => {
       return;
     }
     
-    
-    // Example usage:
     if(! /^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)){
       setErrorMsg("Please enter a valid college email");
       return;
     }
-    
+
     setErrorMsg("");
 
     try {
@@ -33,25 +31,26 @@ const Login = () => {
         password: values.pass,
       });
 
-      if (res.data === "Found and verified") {
+      if (res.data.token) {
+        // Login successful, store token
+        localStorage.setItem('token', res.data.token);  // Store JWT in localStorage
         alert("Login successful");
-     
+
+        // Redirect to student dashboard or other authenticated page
         navigate('/student');
-      } else if (res.data === "password not match") {
+      } else if (res.data.message === "password not match") {
         setErrorMsg("Incorrect password");
-        
       } else {
         setErrorMsg("Data not found");
       }
     } catch (err) {
       setErrorMsg("An error occurred. Please try again.");
-       
     }
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray_bg max-sm:items-start max-sm:pt-20">
-      <div className="min-w-80 max-w-md bg-secondary  shadow-md rounded p-6 flex flex-col gap-6">
+      <div className="min-w-80 max-w-md bg-secondary shadow-md rounded p-6 flex flex-col gap-6">
         <h1 className="text-3xl font-bold">Login</h1>
 
         <InputControl
