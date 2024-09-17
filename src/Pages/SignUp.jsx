@@ -10,77 +10,95 @@ function Signup() {
     email: "",
     pass: "",
     phoneNumber: "",
+    otp: "",
   });
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [showToaster, setShowToaster] = useState(false); // To show toaster
+  const [emailDisabled, setEmailDisabled] = useState(false); // To disable email after sending OTP
+  const [otpVerified, setOtpVerified] = useState(false); // Track OTP verification
 
+  // Handle sending OTP request
+ // Handle sending OTP request
+const handleSendVerificationCode = async () => {
+  if (!values.email) {
+    setErrorMsg("Email is required to send verification code");
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:3001/request-otp', {
+      email: values.email,
+    });
+
+    // OTP sent successfully
+    setEmailDisabled(true); // Disable email input after OTP sent
+    setShowToaster({ show: true, message: response.data.message, type: "success" });
+  } catch (error) {
+    if (error.response && error.response.status === 409) {
+      // Show "User Already Exist" error
+      setShowToaster({ show: true, message: error.response.data.message, type: "error" });
+    } else {
+      // Handle any other errors
+      setShowToaster({ show: true, message: "Error sending OTP. Please try again.", type: "error" });
+    }
+  }
+};
+
+
+  // Handle OTP verification
+  const handleVerifyOTP = async () => {
+    if (!values.otp) {
+      setErrorMsg("Please enter the OTP");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/verify-otp', {
+        email: values.email,
+        otp: values.otp,
+      });
+console.log(response)
+      setShowToaster({ show: true, message: "OTP verified successfully!, Now signUp", type: "success" });
+      setOtpVerified(true); // Mark OTP as verified
+    } catch (error) {
+      setShowToaster({ show: true, message: "Invalid OTP. Please try again.", type: "error" });
+    }
+  };
+
+  // Handle final form submission after OTP verification
   const handleSubmission = async () => {
-    if (!values.name || !values.email || !values.pass || !values.phoneNumber) {
+    if (!otpVerified) {
+      setErrorMsg("Please verify the OTP before submitting");
+      return;
+    }
+
+    if (!values.name || !values.pass || !values.phoneNumber) {
       setErrorMsg("Fill all fields");
       return;
     }
 
-    if(! /^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)){
-      setErrorMsg("Please enter a valid college email");
-      return;
-    }
-    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.pass)){
-      setShowToaster({ 
-        show: true, 
-        message: "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.", 
-        type: "error" 
+    try {
+      const response = await axios.post('http://localhost:3001/signup', {
+        name: values.name,
+        email: values.email,
+        password: values.pass,
+        phoneNumber: values.phoneNumber,
       });
-      return;
+
+      setShowToaster({ show: true, message: "Signup completed successfully!", type: "success" });
+      setTimeout(() => {
+        navigate('/login'); // Redirect to login page
+      }, 2000);
+    } catch (error) {
+      setShowToaster({ show: true, message: "Error completing signup. Please try again.", type: "error" });
     }
-
-
-
-    if (!/^\d{10}$/.test(values.phoneNumber)) {
-      setErrorMsg("Please enter a valid 10-digit phone number");
-      return;
-    }
-
-    setErrorMsg("");
-  
-
-    axios.post('http://localhost:3001/signup', {
-      name: values.name,
-      email: values.email,
-      password: values.pass,
-      phoneNumber: values.phoneNumber
-    })
-    .then(res => {
-      if (res.data === "User Already Exist") {
-        setErrorMsg("User Already Exists");
-      } else if (res.data === "SignUp error") {
-        setShowToaster({ show: true, message: "SignUp error", type: "error" });
-      } else {
-        setShowToaster({ show: true, message: "Registration Successful!", type: "success" });
-
-        setTimeout(() => {
-          setShowToaster({ show: false, message: "", type: "" });
-          navigate('/login'); // Redirect to login page
-        }, 2000);
-
-        setValues({
-          name: "",
-          email: "",
-          pass: "",
-          phoneNumber: "",
-        });
-      }
-    })
-    .catch(error => {
-      setShowToaster({ show: true, message: "Something went wrong. Please try again later.", type: "error" });
-      setSubmitButtonDisabled(false);
-    });
   };
 
   return (
-    <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center ">
-      <div className="sm:min-w-[480px]  bg-secondary shadow-md p-10 rounded-lg flex flex-col gap-4">
+    <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center">
+      <div className="sm:min-w-[480px] bg-secondary shadow-md p-10 rounded-lg flex flex-col gap-4">
         <h1 className="heading text-3xl font-bold">Signup</h1>
 
         <InputControl
@@ -93,22 +111,22 @@ function Signup() {
         />
         <InputControl
           label="GCT Mail ID"
-         type="text"
+          type="text"
           placeholder="Enter email address"
+          disabled={emailDisabled}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, email: event.target.value }))
           }
         />
         <InputControl
           label="Password"
-          type="text"
+          type="password"
           placeholder="Enter password"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, pass: event.target.value }))
           }
         />
-       
-       <InputControl
+        <InputControl
           label="Phone Number"
           type="text"
           placeholder="Enter phone number"
@@ -116,16 +134,41 @@ function Signup() {
             setValues((prev) => ({ ...prev, phoneNumber: event.target.value }))
           }
         />
+        <InputControl
+          label="OTP"
+          type="text"
+          placeholder="Enter OTP"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, otp: event.target.value }))
+          }
+        />
 
         <div className="footer flex flex-col gap-4">
           <b className="error text-bold text-red-600">{errorMsg}</b>
+
+          <button
+            onClick={handleSendVerificationCode}
+            className="button bg-sm-elements text-primary rounded-md font-bold py-2 px-4 transition duration-100"
+            disabled={emailDisabled} // Disable button if email input is disabled
+          >
+            Send Verification Code
+          </button>
+
+          <button
+            onClick={handleVerifyOTP}
+            className="button bg-sm-elements text-primary rounded-md font-bold py-2 px-4 transition duration-100"
+          >
+            Verify OTP
+          </button>
+
           <button
             onClick={handleSubmission}
-            disabled={submitButtonDisabled}
+            disabled={submitButtonDisabled || !otpVerified} // Only enable submission if OTP is verified
             className="button bg-sm-elements text-primary rounded-md font-bold py-2 px-4 transition duration-100"
           >
             Signup
           </button>
+
           <p className="text-700 text-black">
             Already have an account?{" "}
             <span>
@@ -137,9 +180,8 @@ function Signup() {
         </div>
       </div>
 
-      
       {showToaster.show && (
-        <div 
+        <div
           className={`fixed top-4 right-4 py-2 px-4 rounded-md shadow-lg ${
             showToaster.type === "success" ? "bg-green-500" : "bg-red-500"
           } text-white`}
@@ -147,13 +189,6 @@ function Signup() {
           {showToaster.message}
         </div>
       )}
-
-
-
-
-
-
-      
     </div>
   );
 }
