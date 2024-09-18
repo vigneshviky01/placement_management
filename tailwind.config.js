@@ -29,6 +29,7 @@ export default {
         'secondary':'#4F709C',
         "sm-elements": "#F9D9AA",
         "slate-gray": "#E5D283",
+        "btn-clr":"#e5d283",
         
       },
       boxShadow: {

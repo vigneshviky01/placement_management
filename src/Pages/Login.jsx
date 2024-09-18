@@ -43,9 +43,16 @@ const Login = () => {
           type: "success",
         });
 
-        setTimeout(() => {
+        setTimeout(async() => {
           setShowToaster({ show: false, message: "", type: "" });
-          navigate("/student"); // Redirect to student page
+          const res = await axios.post('http://localhost:3001/student', {
+            email: values.email,
+          });
+          if(res.data.Role == 'student')
+          navigate("/student");
+        else if(res.data.Role == 'poc') 
+          navigate("/studentOrPoc");
+          // Redirect to student page
         }, 2000);
       } else if (res.data.message === "password not match") {
         setErrorMsg("Incorrect password");

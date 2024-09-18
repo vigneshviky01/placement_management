@@ -54,7 +54,7 @@ function PocDashboard() {
     formData.append('recruitmentProcess', values.recruitmentProcess);
     formData.append('location', values.location);
     formData.append('bond', values.bond);
-    formData.append('jdfile', values.jdfile); // Append the file here
+    // formData.append('jdfile', values.jdfile); // Append the file here
   
     try {
       const res = await axios.post('http://localhost:3001/poc', formData, {
@@ -80,7 +80,7 @@ function PocDashboard() {
         recruitmentProcess: "",
         location: "",
         bond: "",
-        jdfile: ""
+      
       });
     } catch (error) {
       setShowToaster({ show: true, message: "Something went wrong. Please try again later.", type: "error" });
@@ -166,7 +166,7 @@ function PocDashboard() {
             setValues((prev) => ({ ...prev, bond: event.target.value }))
           }
         />
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Job Description (PDF)
           </label>
@@ -176,7 +176,7 @@ function PocDashboard() {
             onChange={handleJDFileChange}
             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
           />
-        </div>
+        </div> */}
 
         <div className="footer flex flex-col gap-4">
           <b className="error text-bold text-red-600">{errorMsg}</b>
