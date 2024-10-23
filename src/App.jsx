@@ -19,7 +19,7 @@ function App() {
         <Route
           path="/student"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['student']}>
               <StudentDashboard />
             </ProtectedRoute>
           }
@@ -28,7 +28,7 @@ function App() {
         <Route
           path="/poc"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['poc']}>
               <PocDashboard />
             </ProtectedRoute>
           }
@@ -36,7 +36,7 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
               <Admin />
             </ProtectedRoute>
           }
