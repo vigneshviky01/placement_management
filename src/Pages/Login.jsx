@@ -51,6 +51,7 @@ const Login = () => {
       if (res.data.token) {
         // Login successful, store token
         localStorage.setItem('token', res.data.token); // Store JWT in localStorage
+        localStorage.setItem('email', email);
         setShowToaster({
           show: true,
           message: "Login Successful!",
