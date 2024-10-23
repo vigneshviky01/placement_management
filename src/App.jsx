@@ -8,6 +8,7 @@ import ProtectedRoute from "./Pages/ProtectedRoute";
 import Admin from "./Pages/Admin";
 import StudentOrPoc from "./Pages/StudentOrPoc";
 import { Route, Routes, Navigate } from "react-router-dom";
+import StudentDetails from "./Pages/StudentDetails";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
           element={
             <ProtectedRoute>
               <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/studentDetails"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentDetails />
             </ProtectedRoute>
           }
         />
