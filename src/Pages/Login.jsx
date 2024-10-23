@@ -19,7 +19,21 @@ const Login = () => {
       return;
     }
 
-    if (!/^[a-zA-Z]+\.[0-9]+@gct\.ac\.in$/.test(values.email)) {
+    const currentYear = new Date().getFullYear();
+
+    const validYears = [];
+    for (let i = 0; i < 4; i++) {
+      validYears.push((currentYear - i).toString().slice(-2)); // Get last 2 digits of each year
+    }
+  
+    // Ensure email has no leading/trailing spaces
+    const email = values.email.trim();
+    console.log("Email to validate:", email);
+  
+    // Regular expression to validate the email format
+    const emailRegex = new RegExp(`^[a-zA-Z]{4}\\.7177(${validYears.join('|')})1[1-9](l|[135])\\d{2}@gct\\.ac\\.in$`);
+  
+    if (!emailRegex.test(email)) {
       setErrorMsg("Please enter a valid college email");
       return;
     }
