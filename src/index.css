@@ -52,3 +52,39 @@
 
  
 }  
+
+.companydetails-header{
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+  align-items:center;
+}
+.hello{
+  display: flex;
+  justify-content: center;
+}
+table {
+  border-collapse: separate; /* Use separate to enable border-spacing */
+  border-spacing: 10px; /* Adds space between table cells */
+  margin: auto; /* Centers the table horizontally */
+}
+
+td, th {
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px; /* Adds padding inside each cell */
+  text-align: left;
+}
+.operations{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+
+
+
+
+
