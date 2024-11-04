@@ -10,6 +10,7 @@ import Admin from "./Pages/Admin";
 import StudentOrPoc from "./Pages/StudentOrPoc";
 import { Route, Routes, Navigate } from "react-router-dom";
 import StudentDetails from "./Pages/StudentDetails";
+import UpdateCompanyDetails from "./Pages/UpdateCompanyDetails";
 
 function App() {
 
@@ -54,6 +55,12 @@ function App() {
             // </ProtectedRoute>
           }
         />
+        <Route
+  path="/updatecompanydetails"
+  element={<UpdateCompanyDetails />}
+/>
+
+
         <Route
           path="/admin"
           element={

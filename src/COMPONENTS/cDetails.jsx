@@ -11,8 +11,8 @@ function cDetails(props) {
       <td>{props.date}</td>
       <td className='operations'>
         <img src="/info.png" alt="" width={20}/>
-        <img src="/edit.png" alt="" width={20}/>
-        <img src="/delete.png" alt="" width={20}/>
+        <img src="/edit.png" alt="" width={20} onClick={props.updatec}/>
+        <img src="/delete.png" alt="" width={20}  onClick={props.deletec}/>
         </td>
       </tr>
 
