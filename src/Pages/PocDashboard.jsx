@@ -22,7 +22,7 @@ function PocDashboard() {
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [showToaster, setShowToaster] = useState(false); // To show toaster
 
- 
+
 
   const handleSubmission = async () => {
     if (
@@ -33,47 +33,36 @@ function PocDashboard() {
       setErrorMsg("Fill all fields");
       return;
     }
-  
-   
-  
+
+
+
     setErrorMsg("");
     setSubmitButtonDisabled(true);
-  
-    // Create a FormData object for sending the file
-    // const formData = new FormData();
-    // formData.append('Companyname', values.Companyname);
-    // formData.append('criteria', values.criteria);
-    // formData.append('ctc', values.ctc);
-    // formData.append('dept', values.dept);
-    // formData.append('skills', values.skills);
-    // formData.append('date', values.date);
-    // formData.append('recruitmentProcess', values.recruitmentProcess);
-    // formData.append('location', values.location);
-    // formData.append('bond', values.bond);
-    // formData.append('jdfile', values.jdfile); // Append the file here
-  
+
+
+
     try {
-      const res = await axios.post('http://localhost:3001/CD',  {
-        Companyname:values.Companyname,
+      const res = await axios.post('http://localhost:3001/CD', {
+        Companyname: values.Companyname,
         criteria: values.criteria,
-        ctc:values.ctc,
-        dept:values.dept,
-        skills:values.skills,
-        date:values.date,
-        recruitmentProcess:values.recruitmentProcess,
-        location:values.location,
-        bond:values.bond,
-        
+        ctc: values.ctc,
+        dept: values.dept,
+        skills: values.skills,
+        date: values.date,
+        recruitmentProcess: values.recruitmentProcess,
+        location: values.location,
+        bond: values.bond,
+
       });
 
-  
+
       setShowToaster({ show: true, message: "Submission Successful!", type: "success" });
-  
+
       setTimeout(() => {
         setShowToaster({ show: false, message: "", type: "" });
         navigate("/viewcompanydetails"); // Redirect to jobs page
       }, 2000);
-  
+
       setValues({
         Companyname: "",
         criteria: "",
@@ -84,14 +73,14 @@ function PocDashboard() {
         recruitmentProcess: "",
         location: "",
         bond: "",
-      
+
       });
     } catch (error) {
       setShowToaster({ show: true, message: "Something went wrong. Please try again later.", type: "error" });
       setSubmitButtonDisabled(false);
     }
   };
-  
+
 
   return (
     <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center">
@@ -116,12 +105,27 @@ function PocDashboard() {
         />
         <InputControl
           label="CTC"
-          type="text"
+          type="Number"
           placeholder="Enter CTC"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, ctc: event.target.value }))
           }
         />
+        {/* <label for="selection" className="font-bold text-primary">Department</label>
+        <select id="selection" name="selection" className="border border-gray-300 rounded-md px-4 py-2 outline-none transition duration-300 focus:border-gray_bg" onChange={(event) =>
+          setValues((prev) => ({ ...prev, dept: event.target.value }))
+        }>
+          <option value="COMPUTER SCIENCE AND ENGINEERING">COMPUTER SCIENCE AND ENGINEERING</option>
+          <option value="INFORMATION TECHNOLOGY">INFORMATION TECHNOLOGY</option>
+          <option value="ELECTRICAL AND COMMUNICATION ENGINEERING">ELECTRICAL AND COMMUNICATION ENGINEERING</option>
+          <option value="ELECTRICAL AND INSTRUMENTAION ENGINEERING">ELECTRICAL AND INSTRUMENTAION ENGINEERING</option>
+          <option value="ELECTRICAL AND ELECTRONIC ENGINEERING">ELECTRICAL AND ELECTRONIC ENGINEERING</option>
+          <option value="MECHANICAL ENGINEERING">MECHANICAL ENGINEERING</option>
+          <option value="CIVIL ENGINEERING">CIVIL ENGINEERING</option>
+          <option value="INDUSTRIAL BIO TECHNOLOGY">INDUSTRIAL BIO TECHNOLOGY</option>
+          <option value="PRODUCTION ENGINEERING">PRODUCTION ENGINEERING</option>
+        </select> */}
+        
         <InputControl
           label="Department"
           type="text"
@@ -202,7 +206,7 @@ function PocDashboard() {
           {showToaster.message}
         </div>
       )}
-    </div> 
+    </div>
   );
 }
 
