@@ -11,7 +11,8 @@ import StudentOrPoc from "./Pages/StudentOrPoc";
 import { Route, Routes, Navigate } from "react-router-dom";
 import StudentDetails from "./Pages/StudentDetails";
 import UpdateCompanyDetails from "./Pages/UpdateCompanyDetails";
-
+import RaiseQueries from "./Pages/RaiseQueries";
+import PlacementProcess from "./Pages/PlacementProcess";
 function App() {
 
   
