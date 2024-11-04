@@ -38,7 +38,7 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
         try {
           const res = await axios.post('http://localhost:3001/student', { email });
           const studentData = res.data;
-
+          console.log(studentData);
           // Check if any required fields are empty or null
           const isIncomplete =
             !studentData.CGPA ||

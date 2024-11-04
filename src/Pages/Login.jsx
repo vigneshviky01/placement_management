@@ -67,6 +67,8 @@ const Login = () => {
           navigate("/student");
         else if(res.data.Role == 'poc') 
           navigate("/studentOrPoc");
+        else if(res.data.Role == 'admin') 
+          navigate("/admin");
           // Redirect to student page
         }, 2000);
       } else if (res.data.message === "password not match") {

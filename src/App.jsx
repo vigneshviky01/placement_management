@@ -9,7 +9,9 @@ import Admin from "./Pages/Admin";
 import StudentOrPoc from "./Pages/StudentOrPoc";
 import { Route, Routes, Navigate } from "react-router-dom";
 import StudentDetails from "./Pages/StudentDetails";
-
+import CompanyDetails from "./Pages/CompanyDetails";
+import PlacementProcess from "./Pages/PlacementProcess";
+import RaiseQueries from "./Pages/RaiseQueries"
 function App() {
   return (
     <main className="w-full overflow-hidden">
@@ -53,8 +55,33 @@ function App() {
           <Route
           path="/studentOrPoc"
           element={
-           
+            <ProtectedRoute allowedRoles={['student','poc']}>
               <StudentOrPoc />
+              </ProtectedRoute>
+          }
+        />
+          <Route
+          path="/companyDetails"
+          element={
+            <ProtectedRoute allowedRoles={['student','poc']}>
+              <CompanyDetails />
+              </ProtectedRoute>
+           
+          }
+        />
+          <Route
+          path="/placementProcess"
+          element={
+           
+              <PlacementProcess />
+           
+          }
+        />
+          <Route
+          path="/queries"
+          element={
+           
+              <RaiseQueries />
            
           }
         />
