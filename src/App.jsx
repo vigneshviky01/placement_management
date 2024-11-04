@@ -10,8 +10,9 @@ import Admin from "./Pages/Admin";
 import StudentOrPoc from "./Pages/StudentOrPoc";
 import { Route, Routes, Navigate } from "react-router-dom";
 import StudentDetails from "./Pages/StudentDetails";
-import CompanyDetails from "./Pages/CompanyDetails";
+// import CompanyDetails from "./Pages/CompanyDetails";
 import PlacementProcess from "./Pages/PlacementProcess";
+import StudentViewCompanies from "./Pages/StudentViewCompanies"
 import RaiseQueries from "./Pages/RaiseQueries"
 function App() {
 
@@ -75,8 +76,17 @@ function App() {
           <Route
           path="/companyDetails"
           element={
-            <ProtectedRoute allowedRoles={['student','poc']}>
+            <ProtectedRoute allowedRoles={['poc']}>
               <CompanyDetails />
+              </ProtectedRoute>
+           
+          }
+        />
+          <Route
+          path="/studentviewcompanies"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentViewCompanies />
               </ProtectedRoute>
            
           }

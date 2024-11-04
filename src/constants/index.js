@@ -1,8 +1,8 @@
 export const navLinks = [
     {
-      id: "companyDetails",
+      id: "Studentviewcomapanies",
       title: "Company Details",
-      to:'/companyDetails'
+      to:'/studentviewcompanies'
     },
     {
       id: "placementProcess",
