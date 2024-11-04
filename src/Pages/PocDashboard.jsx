@@ -16,58 +16,62 @@ function PocDashboard() {
     recruitmentProcess: "",
     location: "",
     bond: "",
-    jdfile:"" // Will store PDF file  
   });
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [showToaster, setShowToaster] = useState(false); // To show toaster
 
-  const handleJDFileChange = (event) => {
-    const file = event.target.files[0];
-    setValues((prev) => ({ ...prev, jdfile: file }));
-  };
+ 
 
   const handleSubmission = async () => {
     if (
       !values.Companyname || !values.criteria || !values.ctc || !values.dept ||
       !values.skills || !values.date || !values.recruitmentProcess ||
-      !values.location || !values.bond || !values.jdfile
+      !values.location || !values.bond
     ) {
       setErrorMsg("Fill all fields");
       return;
     }
   
-    console.log(values.jdfile);
+   
   
     setErrorMsg("");
     setSubmitButtonDisabled(true);
   
     // Create a FormData object for sending the file
-    const formData = new FormData();
-    formData.append('Companyname', values.Companyname);
-    formData.append('criteria', values.criteria);
-    formData.append('ctc', values.ctc);
-    formData.append('dept', values.dept);
-    formData.append('skills', values.skills);
-    formData.append('date', values.date);
-    formData.append('recruitmentProcess', values.recruitmentProcess);
-    formData.append('location', values.location);
-    formData.append('bond', values.bond);
+    // const formData = new FormData();
+    // formData.append('Companyname', values.Companyname);
+    // formData.append('criteria', values.criteria);
+    // formData.append('ctc', values.ctc);
+    // formData.append('dept', values.dept);
+    // formData.append('skills', values.skills);
+    // formData.append('date', values.date);
+    // formData.append('recruitmentProcess', values.recruitmentProcess);
+    // formData.append('location', values.location);
+    // formData.append('bond', values.bond);
     // formData.append('jdfile', values.jdfile); // Append the file here
   
     try {
-      const res = await axios.post('http://localhost:3001/poc', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const res = await axios.post('http://localhost:3001/CD',  {
+        Companyname:values.Companyname,
+        criteria: values.criteria,
+        ctc:values.ctc,
+        dept:values.dept,
+        skills:values.skills,
+        date:values.date,
+        recruitmentProcess:values.recruitmentProcess,
+        location:values.location,
+        bond:values.bond,
+        
       });
+
   
       setShowToaster({ show: true, message: "Submission Successful!", type: "success" });
   
       setTimeout(() => {
         setShowToaster({ show: false, message: "", type: "" });
-        navigate("/student"); // Redirect to jobs page
+        navigate("/viewcompanydetails"); // Redirect to jobs page
       }, 2000);
   
       setValues({

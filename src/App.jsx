@@ -4,6 +4,7 @@ import Signup from "./Pages/SignUp";
 import NotFound from "./Pages/NotFound";
 import StudentDashboard from "./Pages/StudentDashboard";
 import PocDashboard from "./Pages/PocDashboard";
+import CompanyDetails from "./Pages/CompanyDetails";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import Admin from "./Pages/Admin";
 import StudentOrPoc from "./Pages/StudentOrPoc";
@@ -13,6 +14,9 @@ import CompanyDetails from "./Pages/CompanyDetails";
 import PlacementProcess from "./Pages/PlacementProcess";
 import RaiseQueries from "./Pages/RaiseQueries"
 function App() {
+
+  
+
   return (
     <main className="w-full overflow-hidden">
       <Routes>
@@ -37,11 +41,19 @@ function App() {
         />
 
         <Route
-          path="/poc"
+          path="/addcompanydetails"
           element={
-            <ProtectedRoute allowedRoles={['poc']}>
+            // <ProtectedRoute allowedRoles={['poc']}>
               <PocDashboard />
-            </ProtectedRoute>
+            // </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewcompanydetails"
+          element={
+            // <ProtectedRoute allowedRoles={['poc']}>
+              <CompanyDetails />
+            // </ProtectedRoute>
           }
         />
         <Route
