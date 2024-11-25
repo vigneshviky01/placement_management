@@ -15,18 +15,18 @@ const Nav = () => {
 
   const navigate = useNavigate();
   return (
-    <nav className="flex justify-center py-6 bg-primary text-white ">
+    <nav className="flex sm:justify-center max-sm:justify-around sm:py-6 bg-primary text-white ">
       
 
-      <ul className="flex  items-center list-none gap-14 max-md:py-6 ">
+      <ul className="flex  items-center list-none gap-14 max-md:py-6 max-sm:px-4 ">
         {navLinks.map((link) => {
           return (
             <li
               key={link.id}
-              className="font-medium cursor-pointer text-[18px] min-w-max hover:text-btn-clr "
+              className="font-medium cursor-pointer text-[18px] sm:min-w-max max-sm:w-16 hover:text-btn-clr text-center "
             >
             
-              <Link to={link.to}>{link.title}</Link>
+              <Link className="text-wrap" to={link.to}>{link.title}</Link>
             </li>
           );
         })}
