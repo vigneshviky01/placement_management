@@ -35,9 +35,9 @@ const Recruiters = () => {
           {topRecruiters.map((recruiter, index) => (
             <div
               key={index}
-              className="inline-block bg-white border border-gray-300 rounded-lg p-5 text-center shadow-md w-56 h-72"
+              className=" bg-white border border-gray-300 rounded-lg p-5 text-center shadow-md sm:w-56 sm:h-72 max-sm:min-w-44 max-sm:min-h-44 flex flex-col justify-evenly "
             >
-              <img src={recruiter.logo} alt={recruiter.name} className="w-48 h-48 object-contain mb-4" />
+              <img src={recruiter.logo} alt={recruiter.name} className="sm:w-48  sm:h-48 max-sm:h-20  object-contain mb-4 " />
               <div className="mt-4">
                 <span className="block font-semibold text-lg text-gray-800">{recruiter.name}</span>
                 <span className="block text-green-600 font-bold text-md mt-2">{recruiter.package}</span>
@@ -50,7 +50,7 @@ const Recruiters = () => {
       {/* Recruiters section - only company names */}
       <div className="mb-10">
         <h2 className="text-2xl font-bold mb-5 text-gray-800">Recruiters</h2>
-        <div className="flex flex-wrap justify-between gap-5">
+        <div className="grid sm:grid-cols-3  sm:gap-4 grid-cols-2 grid-rows-1 gap-4">
           {recruiters.map((recruiter, index) => (
             <div
               key={index}

@@ -36,7 +36,7 @@ const CompanyDetails = () => {
 
 
   return (
-    <div className='flex flex-col w-full gap-8'>
+    <div className='flex flex-col w-full gap-8 mb-5'>
         <h2 className='text-xl font-semibold font-mono py-6 pl-4'>List Of Companies in Line:</h2>
         <div className='flex flex-col items-center gap-7 '>
             {companyList.map((item,key)=>{
