@@ -3,7 +3,7 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/SignUp";
 import NotFound from "./Pages/NotFound";
 import StudentDashboard from "./Pages/StudentDashboard";
-import PocDashboard from "./Pages/PocDashboard";
+import AddCompanyDetails from "./Pages/addCompanyDetails";
 import CompanyDetails from "./Pages/CompanyDetails";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import Admin from "./Pages/Admin";
@@ -15,7 +15,9 @@ import RaiseQueries from "./Pages/RaiseQueries";
 import PlacementProcess from "./Pages/PlacementProcess";
 import StudentViewCompanies from "./Pages/StudentViewCompanies"
 import CompanyInfo from "./Pages/CompanyInfo";
-
+import PocDashboard from "./Pages/PocDashboard";
+import PostPlacementProcess from "./Pages/PostPlacementProcess";
+import StudentDB from "./Pages/StudentDB";
 function App() {
 
   
@@ -35,6 +37,14 @@ function App() {
           }
         />
         <Route
+          path="/poc"
+          element={
+            <ProtectedRoute allowedRoles={['poc']}>
+              <PocDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/studentDetails"
           element={
             <ProtectedRoute allowedRoles={['student','poc']}>
@@ -47,7 +57,7 @@ function App() {
           path="/addcompanydetails"
           element={
             <ProtectedRoute allowedRoles={['poc']}>
-              <PocDashboard />
+              <AddCompanyDetails />
             </ProtectedRoute>
           }
         />
@@ -86,10 +96,10 @@ function App() {
           }
         />
           <Route
-          path="/companyDetails"
+          path="/studentDB"
           element={
-            <ProtectedRoute allowedRoles={['poc','student']}>
-              <CompanyDetails />
+            <ProtectedRoute allowedRoles={['poc']}>
+              <StudentDB />
               </ProtectedRoute>
            
           }
@@ -111,6 +121,15 @@ function App() {
            
           }
         />
+          <Route
+          path="/PostPlacementProcess"
+          element={
+           
+              <PostPlacementProcess />
+           
+          }
+        />
+        
           <Route
           path="/queries"
           element={

@@ -4,7 +4,7 @@ import Recruiters from "../COMPONENTS/Recruiters";
 const StudentDashboard = () => {
   return <div className="w-full ">
      <div className="boxWidth">
-          <Nav  />
+          <Nav role="student" />
           <Recruiters />
         </div>
   </div>;
