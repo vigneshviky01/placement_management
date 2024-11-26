@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import InputControl from "../Components/InputControl";
 
@@ -20,41 +20,69 @@ function PocDashboard() {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
-  const [showToaster, setShowToaster] = useState(false); // To show toaster
-
-
+  const [showToaster, setShowToaster] = useState({ show: false, message: "", type: "" });
 
   const handleSubmission = async () => {
+    // Input validation
     if (
-      !values.Companyname || !values.criteria || !values.ctc || !values.dept ||
-      !values.skills || !values.date || !values.recruitmentProcess ||
-      !values.location || !values.bond
+      !values.Companyname ||
+      !values.criteria ||
+      !values.ctc ||
+      !values.dept ||
+      !values.skills ||
+      !values.date ||
+      !values.recruitmentProcess ||
+      !values.location ||
+      !values.bond
     ) {
-      setErrorMsg("Fill all fields");
+      setErrorMsg("All fields are required.");
       return;
     }
 
+    // Field-specific validations
+    if (!/^\d+(\.\d+)?$/.test(values.ctc) || Number(values.ctc) <= 0) {
+      setErrorMsg("CTC must be a positive number.");
+      return;
+    }
 
+    const selectedDate = new Date(values.date);
+    const currentDate = new Date();
+    if (isNaN(selectedDate.getTime()) || selectedDate <= currentDate) {
+      setErrorMsg("Date must be a valid future date.");
+      return;
+    }
 
+    if (!/^[a-zA-Z\s,]+$/.test(values.dept)) {
+      setErrorMsg("Department should only contain letters and commas.");
+      return;
+    }
+
+    if (!/^[a-zA-Z\s,]+$/.test(values.skills)) {
+      setErrorMsg("Skills should only contain letters and commas.");
+      return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(values.location)) {
+      setErrorMsg("Location should only contain letters.");
+      return;
+    }
+
+    if (!values.recruitmentProcess.trim()) {
+      setErrorMsg("Recruitment process cannot be empty.");
+      return;
+    }
+
+    if (!values.bond.trim()) {
+      setErrorMsg("Bond details cannot be empty.");
+      return;
+    }
+
+    // Clear error message before submission
     setErrorMsg("");
     setSubmitButtonDisabled(true);
 
-
-
     try {
-      const res = await axios.post('http://localhost:3001/CD', {
-        Companyname: values.Companyname,
-        criteria: values.criteria,
-        ctc: values.ctc,
-        dept: values.dept,
-        skills: values.skills,
-        date: values.date,
-        recruitmentProcess: values.recruitmentProcess,
-        location: values.location,
-        bond: values.bond,
-
-      });
-
+      const res = await axios.post("http://localhost:3001/CD", values);
 
       setShowToaster({ show: true, message: "Submission Successful!", type: "success" });
 
@@ -63,6 +91,7 @@ function PocDashboard() {
         navigate("/viewcompanydetails"); // Redirect to jobs page
       }, 2000);
 
+      // Clear form fields after submission
       setValues({
         Companyname: "",
         criteria: "",
@@ -73,7 +102,6 @@ function PocDashboard() {
         recruitmentProcess: "",
         location: "",
         bond: "",
-
       });
     } catch (error) {
       setShowToaster({ show: true, message: "Something went wrong. Please try again later.", type: "error" });
@@ -81,16 +109,15 @@ function PocDashboard() {
     }
   };
 
-
   return (
     <div className="h-full min-h-screen w-full bg-gray_bg flex justify-center items-center">
       <div className="sm:min-w-[480px] bg-secondary shadow-md p-10 rounded-lg flex flex-col gap-4">
         <h1 className="heading text-3xl font-bold">Company Details</h1>
 
         <InputControl
-          label="Companyname"
+          label="Company Name"
           type="text"
-          placeholder="Enter the job Companyname"
+          placeholder="Enter the company name"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, Companyname: event.target.value }))
           }
@@ -98,38 +125,23 @@ function PocDashboard() {
         <InputControl
           label="Criteria"
           type="text"
-          placeholder="Enter criteria"
+          placeholder="Enter criteria (e.g., Minimum 70%)"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, criteria: event.target.value }))
           }
         />
         <InputControl
           label="CTC"
-          type="Number"
+          type="number"
           placeholder="Enter CTC"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, ctc: event.target.value }))
           }
         />
-        {/* <label for="selection" className="font-bold text-primary">Department</label>
-        <select id="selection" name="selection" className="border border-gray-300 rounded-md px-4 py-2 outline-none transition duration-300 focus:border-gray_bg" onChange={(event) =>
-          setValues((prev) => ({ ...prev, dept: event.target.value }))
-        }>
-          <option value="COMPUTER SCIENCE AND ENGINEERING">COMPUTER SCIENCE AND ENGINEERING</option>
-          <option value="INFORMATION TECHNOLOGY">INFORMATION TECHNOLOGY</option>
-          <option value="ELECTRICAL AND COMMUNICATION ENGINEERING">ELECTRICAL AND COMMUNICATION ENGINEERING</option>
-          <option value="ELECTRICAL AND INSTRUMENTAION ENGINEERING">ELECTRICAL AND INSTRUMENTAION ENGINEERING</option>
-          <option value="ELECTRICAL AND ELECTRONIC ENGINEERING">ELECTRICAL AND ELECTRONIC ENGINEERING</option>
-          <option value="MECHANICAL ENGINEERING">MECHANICAL ENGINEERING</option>
-          <option value="CIVIL ENGINEERING">CIVIL ENGINEERING</option>
-          <option value="INDUSTRIAL BIO TECHNOLOGY">INDUSTRIAL BIO TECHNOLOGY</option>
-          <option value="PRODUCTION ENGINEERING">PRODUCTION ENGINEERING</option>
-        </select> */}
-        
         <InputControl
           label="Department"
           type="text"
-          placeholder="Enter department"
+          placeholder="Enter department(s)"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, dept: event.target.value }))
           }
@@ -145,7 +157,7 @@ function PocDashboard() {
         <InputControl
           label="Date"
           type="date"
-          placeholder="Enter the recruitment date"
+          placeholder="Enter recruitment date"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, date: event.target.value }))
           }
@@ -174,17 +186,6 @@ function PocDashboard() {
             setValues((prev) => ({ ...prev, bond: event.target.value }))
           }
         />
-        {/* <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Job Description (PDF)
-          </label>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleJDFileChange}
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
-          />
-        </div> */}
 
         <div className="footer flex flex-col gap-4">
           <b className="error text-bold text-red-600">{errorMsg}</b>
@@ -200,8 +201,9 @@ function PocDashboard() {
 
       {showToaster.show && (
         <div
-          className={`fixed top-4 right-4 py-2 px-4 rounded-md shadow-lg ${showToaster.type === "success" ? "bg-green-500" : "bg-red-500"
-            } text-white`}
+          className={`fixed top-4 right-4 py-2 px-4 rounded-md shadow-lg ${
+            showToaster.type === "success" ? "bg-green-500" : "bg-red-500"
+          } text-white`}
         >
           {showToaster.message}
         </div>

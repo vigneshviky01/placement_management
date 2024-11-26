@@ -85,6 +85,8 @@ td, th {
   justify-content: space-between;
   padding-left: 40px;
   padding-right: 40px;
+  margin-top: 10%;
+  margin-bottom: 10%;
 }
 
 .operations img{
