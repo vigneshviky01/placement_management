@@ -11,6 +11,15 @@ const CompanyCard = ({
     location,
     bond
 }) => {
+
+
+
+    postData = async(companyName)=>{
+       const email = localStorage.getItem("email");
+
+      const res= await axios.post("http://localhost:3001/add_student_to_company",{companyName,email});
+      console.log(res);
+    }
     return (
         <div className='flex flex-col items-center gap-4 border-2 shadow-md px-10 py-5 sm:w-[600px]'>
             <h2 className='font-bold text-md text-center'>{Companyname}</h2>
@@ -48,7 +57,7 @@ const CompanyCard = ({
                     <p>{recruitmentProcess}</p>
                 </div>
             </div>
-            <div className='bg-gray-400 text-white px-3 py-2 rounded-md font-semibold tracking-wide cursor-pointer'>
+            <div className='bg-gray-400 text-white px-3 py-2 rounded-md font-semibold tracking-wide cursor-pointer' onClick={()=>{postData(Companyname)}}>
                 Apply
             </div>
         </div>

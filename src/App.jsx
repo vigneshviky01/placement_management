@@ -29,7 +29,7 @@ function App() {
         <Route
           path="/student"
           element={
-            <ProtectedRoute allowedRoles={['student']}>
+            <ProtectedRoute allowedRoles={['student','poc']}>
               <StudentDashboard />
             </ProtectedRoute>
           }
@@ -37,7 +37,7 @@ function App() {
         <Route
           path="/studentDetails"
           element={
-            <ProtectedRoute allowedRoles={['student']}>
+            <ProtectedRoute allowedRoles={['student','poc']}>
               <StudentDetails />
             </ProtectedRoute>
           }
@@ -46,17 +46,17 @@ function App() {
         <Route
           path="/addcompanydetails"
           element={
-            // <ProtectedRoute allowedRoles={['poc']}>
+            <ProtectedRoute allowedRoles={['poc']}>
               <PocDashboard />
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path="/viewcompanydetails"
           element={
-            // <ProtectedRoute allowedRoles={['poc']}>
+            <ProtectedRoute allowedRoles={['poc']}>
               <CompanyDetails />
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -88,7 +88,7 @@ function App() {
           <Route
           path="/companyDetails"
           element={
-            <ProtectedRoute allowedRoles={['poc']}>
+            <ProtectedRoute allowedRoles={['poc','student']}>
               <CompanyDetails />
               </ProtectedRoute>
            
@@ -97,7 +97,7 @@ function App() {
           <Route
           path="/studentviewcompanies"
           element={
-            <ProtectedRoute allowedRoles={['student']}>
+            <ProtectedRoute allowedRoles={['student','poc']}>
               <StudentViewCompanies />
               </ProtectedRoute>
            
