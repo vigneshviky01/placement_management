@@ -10,7 +10,7 @@ function cDetails(props) {
       <td>{props.criteria}</td>
       <td>{props.date}</td>
       <td className='operations'>
-        <img src="/info.png" alt="" width={20}/>
+        <img src="/info.png" alt="" width={20} onClick={props.info}/>
         <img src="/edit.png" alt="" width={20} onClick={props.updatec}/>
         <img src="/delete.png" alt="" width={20}  onClick={props.deletec}/>
         </td>

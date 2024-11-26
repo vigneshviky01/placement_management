@@ -14,6 +14,7 @@ import UpdateCompanyDetails from "./Pages/UpdateCompanyDetails";
 import RaiseQueries from "./Pages/RaiseQueries";
 import PlacementProcess from "./Pages/PlacementProcess";
 import StudentViewCompanies from "./Pages/StudentViewCompanies"
+import CompanyInfo from "./Pages/CompanyInfo";
 
 function App() {
 
@@ -61,6 +62,10 @@ function App() {
         <Route
   path="/updatecompanydetails"
   element={<UpdateCompanyDetails />}
+/>
+        <Route
+  path="/companyinfo"
+  element={<CompanyInfo />}
 />
 
 

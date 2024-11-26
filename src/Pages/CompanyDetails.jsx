@@ -57,6 +57,11 @@ async function deletecompany(companyName) {
         navigate(`/updatecompanydetails`, { state: { companyName } });
     }
 
+    function CompanyInformation(companyName){
+        navigate(`/companyinfo`, { state: { companyName } });
+    }
+
+
     // Generate list of company details
     const company_list = companyList.map((company, index) => (
         <CDetails
@@ -65,10 +70,26 @@ async function deletecompany(companyName) {
             name={company.Companyname}
             criteria={company.criteria}
             date={company.date}
+            info={()=>CompanyInformation(company.Companyname)}
             deletec={() => deletecompany(company.Companyname)} // Delete action
             updatec={() => updatecompany(company.Companyname)} // Update action
         />
     ));
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Function to navigate to add company page
     function Addcompany() {
