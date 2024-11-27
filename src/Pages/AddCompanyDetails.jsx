@@ -16,6 +16,7 @@ function AddCompanyDetails() {
     recruitmentProcess: "",
     location: "",
     bond: "",
+    role :""
   });
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -28,7 +29,7 @@ function AddCompanyDetails() {
     if (
       !values.Companyname || !values.criteria || !values.ctc || !values.dept ||
       !values.skills || !values.date || !values.recruitmentProcess ||
-      !values.location || !values.bond
+      !values.location || !values.bond  || !values.role
     ) {
       setErrorMsg("Fill all fields");
       return;
@@ -52,6 +53,7 @@ function AddCompanyDetails() {
         recruitmentProcess: values.recruitmentProcess,
         location: values.location,
         bond: values.bond,
+        role: values.role,
 
       });
 
@@ -73,6 +75,7 @@ function AddCompanyDetails() {
         recruitmentProcess: "",
         location: "",
         bond: "",
+        role: "",
 
       });
     } catch (error) {
@@ -93,6 +96,14 @@ function AddCompanyDetails() {
           placeholder="Enter the job Companyname"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, Companyname: event.target.value }))
+          }
+        />
+        <InputControl
+          label="Role"
+          type="text"
+          placeholder="Enter the Role"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, role: event.target.value }))
           }
         />
         <InputControl

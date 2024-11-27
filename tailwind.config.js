@@ -52,6 +52,7 @@ export default {
     animation: {
       scroll: 'scroll 20s linear infinite',
     },
+    
   },
   plugins: [],
 }

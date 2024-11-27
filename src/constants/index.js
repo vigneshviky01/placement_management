@@ -15,11 +15,7 @@ export const navLinksPoc = [
       title: "Post Placement Process",
       to:'/PostPlacementProcess'
     },
-    {
-      id: "queries",
-      title: "Raise Queries",
-      to:'/queries'
-    },
+  
    
   ];
   export const navLinksStudent = [
@@ -34,9 +30,9 @@ export const navLinksPoc = [
       to:'/placementProcess'
     },
     {
-      id: "queries",
-      title: "Raise Queries",
-      to:'/queries'
+      id: "recruitersPage",
+      title: "Recruiters",
+      to:'/recruiters'
     },
    
   ];
