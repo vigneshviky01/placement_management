@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import InputControl from "../Components/InputControl";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const Login = () => {
     email: "",
     pass: "",
   });
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const [showToaster, setShowToaster] = useState({ show: false, message: "", type: "" }); // To show toaster as object
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
@@ -25,14 +27,13 @@ const Login = () => {
     for (let i = 0; i < 4; i++) {
       validYears.push((currentYear - i).toString().slice(-2)); // Get last 2 digits of each year
     }
-  
+
     // Ensure email has no leading/trailing spaces
     const email = values.email.trim();
-    console.log("Email to validate:", email);
-  
+
     // Regular expression to validate the email format
     const emailRegex = new RegExp(`^[a-zA-Z]{4}\\.7177(${validYears.join('|')})1[1-9](l|[135])\\d{2}@gct\\.ac\\.in$`);
-  
+
     if (!emailRegex.test(email)) {
       setErrorMsg("Please enter a valid college email");
       return;
@@ -46,30 +47,25 @@ const Login = () => {
         email: values.email,
         password: values.pass,
       });
-      console.log(res.data.token);
-      console.log(res.data.message);
+
       if (res.data.token) {
         // Login successful, store token
-        localStorage.setItem('token', res.data.token); // Store JWT in localStorage
-        localStorage.setItem('email', email);
+        localStorage.setItem("token", res.data.token); // Store JWT in localStorage
+        localStorage.setItem("email", email);
         setShowToaster({
           show: true,
           message: "Login Successful!",
           type: "success",
         });
 
-        setTimeout(async() => {
+        setTimeout(async () => {
           setShowToaster({ show: false, message: "", type: "" });
-          const res = await axios.post('http://localhost:3001/student', {
+          const res = await axios.post("http://localhost:3001/student", {
             email: values.email,
           });
-          if(res.data.Role == 'student')
-          navigate("/student");
-        else if(res.data.Role == 'poc') 
-          navigate("/studentOrPoc");
-        else if(res.data.Role == 'admin') 
-          navigate("/admin");
-          // Redirect to student page
+          if (res.data.Role === "student") navigate("/student");
+          else if (res.data.Role === "poc") navigate("/studentOrPoc");
+          else if (res.data.Role === "admin") navigate("/admin");
         }, 2000);
       } else if (res.data.message === "password not match") {
         setErrorMsg("Incorrect password");
@@ -95,14 +91,26 @@ const Login = () => {
           }
           placeholder="Enter email address"
         />
-        <InputControl
-          label="Password"
-          type="text" // Correct type for password input
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, pass: event.target.value }))
-          }
-          placeholder="Enter Password"
-        />
+        <div className="relative">
+          <InputControl
+            label="Password"
+            type={showPassword ? "text" : "password"} // Toggle password visibility
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, pass: event.target.value }))
+            }
+            placeholder="Enter Password"
+          />
+          <div
+            className="absolute right-3 top-[52px] transform -translate-y-1/2 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              <FaEyeSlash className="text-gray-500" size={20} />
+            ) : (
+              <FaEye className="text-gray-500" size={20} />
+            )}
+          </div>
+        </div>
 
         <div className="flex flex-col gap-4">
           <b className="text-red-500 font-bold">{errorMsg}</b>

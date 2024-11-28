@@ -17,6 +17,8 @@ const EditProfile = () => {
     TwelfthMark: "",
     CurrentSememseter: "",
     CGPA: "",
+    currentBacklogs: "", // Include currentBacklogs
+    totalBacklogs: "",   // Include totalBacklogs
     Gender: "",
     YearOfPassing: "",
     Resume: "",
@@ -24,7 +26,6 @@ const EditProfile = () => {
   });
 
   const [isEditable, setIsEditable] = useState(false); // State to toggle between view and edit modes
-
   const [showToaster, setShowToaster] = useState({ show: false, message: "", type: "" }); // To show toaster as object
 
   // Fetch personal data on load
@@ -34,6 +35,7 @@ const EditProfile = () => {
         const response = await axios.post("http://localhost:3001/student", {
           email,
         });
+        console.log(response.data); // Debugging: Check backend response
         const { _id, __v, Role, ...filteredData } = response.data; // Exclude _id, __v, and Role
         setFormData(filteredData);
       } catch (error) {
@@ -53,7 +55,7 @@ const EditProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from submitting
     try {
-      await axios.patch("http://localhost:3001/student/update", {
+      await axios.patch("http://localhost:3001/student/profileupdate", {
         email,
         ...formData,
       });
@@ -119,13 +121,15 @@ const EditProfile = () => {
                   {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
                 </label>
                 <input
-                  type="text"
+                  type={key === "currentBacklogs" || key === "totalBacklogs" ? "number" : "text"} // Use number type for backlogs
                   name={key}
                   value={formData[key] || ""}
                   onChange={handleChange}
                   disabled={!isEditable} // Disable if not in edit mode
                   className={`w-full p-2 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-dashed ${
-                    isEditable ? "bg-transparent border-b-2 focus:border-gray-600" : "bg-gray-100 cursor-not-allowed"
+                    isEditable
+                      ? "bg-transparent border-b-2 focus:border-gray-600"
+                      : "bg-gray-100 cursor-not-allowed"
                   }`}
                 />
               </div>

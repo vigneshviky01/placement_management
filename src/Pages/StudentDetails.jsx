@@ -14,6 +14,8 @@ function StudentDetails() {
     TwelfthMark: "",
     CurrentSemester: "",
     CGPA: "",
+    currentBacklogs:"",
+    totalBacklogs:"",
     Gender: "",
     YearOfPassing: "",
     Resume: "",
@@ -26,7 +28,7 @@ function StudentDetails() {
   const handleSubmission = async () => {
     if (!values.RollNumber || !values.Department || !values.PersonalEmail || 
         !values.TenthMark || !values.TwelfthMark || !values.CurrentSemester ||
-        !values.CGPA || !values.Gender || !values.YearOfPassing || !values.Resume) {
+        !values.CGPA||!values.currentBacklogs||!values.totalBacklogs || !values.Gender || !values.YearOfPassing || !values.Resume) {
       setErrorMsg("Please fill all fields");
       return;
     }
@@ -45,6 +47,8 @@ function StudentDetails() {
       twelfthMark: values.TwelfthMark,
       currentSemester: values.CurrentSemester,
       CGPA: values.CGPA,
+      currentBacklogs:values.currentBacklogs,
+      totalBacklogs:values.totalBacklogs,
       gender: values.Gender,
       yearOfPassing: values.YearOfPassing,
       resume: values.Resume,
@@ -68,6 +72,8 @@ function StudentDetails() {
         TwelfthMark: "",
         CurrentSemester: "",
         CGPA: "",
+        currentBacklogs:"",
+        totalBacklogs:"",
         Gender: "",
         YearOfPassing: "",
         Resume: "",
@@ -138,6 +144,24 @@ function StudentDetails() {
           placeholder="Enter CGPA"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, CGPA: event.target.value }))
+          }
+        />
+        <InputControl
+          label="Current No of backlogs"
+          type="number"
+          step="0.01"
+          placeholder="Enter current backlog"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, currentBacklogs: event.target.value }))
+          }
+        />
+        <InputControl
+          label="Total History of Arrears"
+          type="number"
+          step="0.01"
+          placeholder="Enter total history of arrears"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, totalBacklogs: event.target.value }))
           }
         />
         <InputControl

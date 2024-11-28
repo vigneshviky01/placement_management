@@ -77,9 +77,17 @@ function App() {
         />
         <Route
           path="/updatecompanydetails"
-          element={<UpdateCompanyDetails />}
+          element={
+            <ProtectedRoute allowedRoles={["poc"]}>
+              <UpdateCompanyDetails />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/companyinfo" element={<CompanyInfo />} />
+        <Route path="/companyinfo" element={
+           <ProtectedRoute allowedRoles={["poc"]}>
+          <CompanyInfo />
+          </ProtectedRoute>
+          } />
 
         <Route
           path="/admin"
@@ -121,10 +129,21 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/placementProcess" element={<PlacementProcess />} />
+        <Route
+          path="/placementProcess"
+          element={
+            <ProtectedRoute allowedRoles={["student", "poc"]}>
+              <PlacementProcess />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/PostPlacementProcess"
-          element={<PostPlacementProcess />}
+          element={
+            <ProtectedRoute allowedRoles={["poc"]}>
+              <PostPlacementProcess />
+            </ProtectedRoute>
+          }
         />
 
         <Route path="/signup" element={<Signup />} />

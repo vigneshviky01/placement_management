@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import InputControl from "../Components/InputControl";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importing eye icons
 
 function Signup() {
   const navigate = useNavigate();
@@ -18,34 +19,33 @@ function Signup() {
   const [showToaster, setShowToaster] = useState(false); // To show toaster
   const [emailDisabled, setEmailDisabled] = useState(false); // To disable email after sending OTP
   const [otpVerified, setOtpVerified] = useState(false); // Track OTP verification
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   // Handle sending OTP request
- // Handle sending OTP request
-const handleSendVerificationCode = async () => {
-  if (!values.email) {
-    setErrorMsg("Email is required to send verification code");
-    return;
-  }
-
-  try {
-    const response = await axios.post('http://localhost:3001/request-otp', {
-      email: values.email,
-    });
-
-    // OTP sent successfully
-    setEmailDisabled(true); // Disable email input after OTP sent
-    setShowToaster({ show: true, message: response.data.message, type: "success" });
-  } catch (error) {
-    if (error.response && error.response.status === 409) {
-      // Show "User Already Exist" error
-      setShowToaster({ show: true, message: error.response.data.message, type: "error" });
-    } else {
-      // Handle any other errors
-      setShowToaster({ show: true, message: "Error sending OTP. Please try again.", type: "error" });
+  const handleSendVerificationCode = async () => {
+    if (!values.email) {
+      setErrorMsg("Email is required to send verification code");
+      return;
     }
-  }
-};
 
+    try {
+      const response = await axios.post('http://localhost:3001/request-otp', {
+        email: values.email,
+      });
+
+      // OTP sent successfully
+      setEmailDisabled(true); // Disable email input after OTP sent
+      setShowToaster({ show: true, message: response.data.message, type: "success" });
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        // Show "User Already Exist" error
+        setShowToaster({ show: true, message: error.response.data.message, type: "error" });
+      } else {
+        // Handle any other errors
+        setShowToaster({ show: true, message: "Error sending OTP. Please try again.", type: "error" });
+      }
+    }
+  };
 
   // Handle OTP verification
   const handleVerifyOTP = async () => {
@@ -59,7 +59,6 @@ const handleSendVerificationCode = async () => {
         email: values.email,
         otp: values.otp,
       });
-console.log(response)
       setShowToaster({ show: true, message: "OTP verified successfully!, Now signUp", type: "success" });
       setOtpVerified(true); // Mark OTP as verified
     } catch (error) {
@@ -118,14 +117,28 @@ console.log(response)
             setValues((prev) => ({ ...prev, email: event.target.value }))
           }
         />
-        <InputControl
-          label="Password"
-          type="password"
-          placeholder="Enter password"
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, pass: event.target.value }))
-          }
-        />
+        {/* Password input with toggle for visibility */}
+        <div className="relative">
+          <InputControl
+            label="Password"
+            type={showPassword ? "text" : "password"} // Toggle between text and password
+            placeholder="Enter password"
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, pass: event.target.value }))
+            }
+          />
+          <div
+            className="absolute right-3 top-[52px] transform -translate-y-1/2 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              <FaEyeSlash className="text-gray-500" size={20} />
+            ) : (
+              <FaEye className="text-gray-500" size={20} />
+            )}
+          </div>
+        </div>
+
         <InputControl
           label="Phone Number"
           type="text"

@@ -27,7 +27,7 @@ function AddCompanyDetails() {
 
   const handleSubmission = async () => {
     if (
-      !values.Companyname || !values.criteria || !values.ctc || !values.dept ||
+      !values.Companyname || !values.criteria||!values.currentBacklogs||!values.totalBacklogs || !values.ctc || !values.dept ||
       !values.skills || !values.date || !values.recruitmentProcess ||
       !values.location || !values.bond  || !values.role
     ) {
@@ -46,6 +46,8 @@ function AddCompanyDetails() {
       const res = await axios.post('http://localhost:3001/CD', {
         Companyname: values.Companyname,
         criteria: values.criteria,
+        currentBacklogs:values.currentBacklogs,
+        totalBacklogs:values.totalBacklogs,
         ctc: values.ctc,
         dept: values.dept,
         skills: values.skills,
@@ -68,6 +70,8 @@ function AddCompanyDetails() {
       setValues({
         Companyname: "",
         criteria: "",
+        currentBacklogs:"",
+        totalBacklogs:"",
         ctc: "",
         dept: "",
         skills: "",
@@ -112,6 +116,22 @@ function AddCompanyDetails() {
           placeholder="Enter criteria"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, criteria: event.target.value }))
+          }
+        />
+        <InputControl
+          label="Max no of current Backlogs Accepted"
+          type="number"
+          placeholder="Enter max no of current Backlogs to accepted by company"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, currentBacklogs: event.target.value }))
+          }
+        />
+        <InputControl
+          label="Max no of total Backlogs Accepted"
+          type="number"
+          placeholder="Enter max no of total Backlogs to accepted by company"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, totalBacklogs: event.target.value }))
           }
         />
         <InputControl

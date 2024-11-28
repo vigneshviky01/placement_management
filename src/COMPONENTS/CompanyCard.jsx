@@ -4,6 +4,8 @@ import axios from "axios";
 const CompanyCard = ({
   Companyname,
   criteria,
+  currentBacklogs,
+  totalBacklogs,
   ctc,
   dept,
   skills,
@@ -11,36 +13,56 @@ const CompanyCard = ({
   recruitmentProcess,
   location,
   bond,
+  studentData,
 }) => {
   const [showToaster, setShowToaster] = useState({ show: false, message: "", type: "" });
 
+  // Post data and eligibility check
   const postData = async (companyName) => {
-    const email = localStorage.getItem("email"); // Ensure email is set in localStorage
+    const email = localStorage.getItem("email");
+    // Process departments for comparison
+    const studentDepartments = studentData.Department.split(",").map((d) => d.trim());
+    const companyDepartments = dept.split(",").map((d) => d.trim());
+  
+    // Check eligibility
+    const isEligible =
+      parseFloat(studentData.CGPA) >= parseFloat(criteria) &&
+      parseInt(studentData.currentBacklogs) <= parseInt(currentBacklogs) &&
+      parseInt(studentData.totalBacklogs) <= parseInt(totalBacklogs) &&
+      companyDepartments.some((d) => studentDepartments.includes(d));
+  
+    if (!isEligible) {
+      setShowToaster({
+        show: true,
+        message: "You are not eligible for this company.",
+        type: "error",
+      });
+      setTimeout(() => setShowToaster({ show: false, message: "", type: "" }), 3000);
+      return;
+    }
+  
+    // If eligible, proceed to apply
     try {
       const res = await axios.post("http://localhost:3001/add_student_to_company", {
-        companyName, // Use the same key as the backend expects
+        companyName,
         email,
       });
-      // Show success toaster
       setShowToaster({
         show: true,
         message: res.data.message || "Applied successfully!",
         type: "success",
       });
     } catch (error) {
-      // Show error toaster
       setShowToaster({
         show: true,
         message: error.response?.data.message || "An error occurred.",
         type: "error",
       });
     } finally {
-      // Hide toaster after 3 seconds
-      setTimeout(() => {
-        setShowToaster({ show: false, message: "", type: "" });
-      }, 3000);
+      setTimeout(() => setShowToaster({ show: false, message: "", type: "" }), 3000);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center gap-4 border-2 shadow-md px-10 py-5 sm:w-[600px]">
@@ -51,6 +73,14 @@ const CompanyCard = ({
           <p>{criteria}</p>
         </div>
         <div className="flex gap-3">
+          <p className="font-semibold">Max no of current Backlog Accepted: </p>
+          <p>{currentBacklogs}</p>
+        </div>
+        <div className="flex gap-3">
+          <p className="font-semibold">Max no of total Backlog Accepted: </p>
+          <p>{totalBacklogs}</p>
+        </div>
+        <div className="flex gap-3">
           <p className="font-semibold">Skills Required: </p>
           <p>{skills}</p>
         </div>
@@ -59,7 +89,7 @@ const CompanyCard = ({
           <p>{ctc}</p>
         </div>
         <div className="flex gap-3">
-          <p className="font-semibold">Open to Depts: </p>
+          <p className="font-semibold">Open to Departments: </p>
           <p>{dept}</p>
         </div>
         <div className="flex gap-3">
@@ -81,9 +111,7 @@ const CompanyCard = ({
       </div>
       <div
         className="bg-gray-400 text-white px-3 py-2 rounded-md font-semibold tracking-wide cursor-pointer"
-        onClick={() => {
-          postData(Companyname);
-        }}
+        onClick={() => postData(Companyname)}
       >
         Apply
       </div>
